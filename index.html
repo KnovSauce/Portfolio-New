@@ -24,7 +24,218 @@
       --border-color: rgba(255, 255, 255, 0.1);
       --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
+    /* Intro Slide Screen */
+.intro-slide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--primary-bg) 100%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+}
 
+.intro-slide.hidden {
+  transform: translateX(-100%);
+}
+
+.intro-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(175, 82, 222, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(255, 45, 146, 0.05) 0%, transparent 50%);
+}
+
+.intro-content {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  max-width: 1000px;
+  width: 90%;
+  position: relative;
+  z-index: 1;
+}
+
+.photo-container {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.photo-circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: photoGlow 3s ease-in-out infinite alternate;
+}
+
+.photo-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-placeholder {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+/* If you have an actual photo, replace .photo-placeholder with this: */
+.photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.intro-text {
+  flex: 1;
+  text-align: left;
+}
+
+.intro-slide-title {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  animation: slideInRight 1s ease-out 0.3s both;
+}
+
+.intro-slide-subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+  animation: slideInRight 1s ease-out 0.6s both;
+}
+
+.intro-slide-description {
+  font-size: 1.1rem;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  animation: slideInRight 1s ease-out 0.9s both;
+}
+
+.click-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+  font-size: 1rem;
+  animation: slideInRight 1s ease-out 1.2s both, pulse 2s ease-in-out infinite;
+}
+
+.click-hint i {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes photoGlow {
+  0% { box-shadow: 0 0 20px rgba(0, 122, 255, 0.3); }
+  100% { box-shadow: 0 0 40px rgba(175, 82, 222, 0.5), 0 0 60px rgba(255, 45, 146, 0.3); }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+  40% { transform: translateX(-5px); }
+  60% { transform: translateX(-3px); }
+}
+
+
+@media (max-width: 768px) {
+  .intro-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .photo-circle {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .intro-text {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-circle {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .photo-placeholder {
+    font-size: 3rem;
+  }
+}
+
+
+body.intro-active {
+  overflow: hidden;
+}
+
+body.intro-active main,
+body.intro-active header,
+body.intro-active footer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+main, header, footer {
+  transition: opacity 0.5s ease;
+}
     * {
       margin: 0;
       padding: 0;
@@ -115,7 +326,18 @@
       padding: 1rem 2rem;
       z-index: 100;
       transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
+    header.hidden{
+      transform: translate(-50%, -120%);
+  opacity: 0;
+    }
+    header.visible {
+  transform: translateX(-50%);
+  opacity: 1;
+}
+
 
     .header-content {
       display: flex;
@@ -589,6 +811,40 @@
   </style>
 </head>
 <body>
+
+  <!-- Intro Slide Screen -->
+<div class="intro-slide" id="introSlide">
+  <div class="intro-content">
+    <div class="photo-container">
+      <div class="photo-circle">
+        <div class="photo-inner">
+          <!-- Replace this placeholder with your actual photo -->
+          <div class="photo-placeholder" >
+            <img src="WhatsApp Image 2025-09-09 at 22.38.48_d58c60ab.jpg" alt="Aditya Ojha" class="photo-image">
+          </div>
+          <!-- If you have a photo, replace the above div with:
+          
+          -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="intro-text">
+      <h1 class="intro-slide-title">Aditya Ojha</h1>
+      <p class="intro-slide-subtitle">Software Engineer & Creative Thinker</p>
+      <p class="intro-slide-description">
+        Welcome to my digital space where technology meets creativity. I'm a passionate 
+        Computer Science student exploring the fascinating intersection of code, literature, 
+        and human experience. Let's build something extraordinary together.
+      </p>
+      <div class="click-hint">
+        <i class="fas fa-hand-pointer"></i>
+        Click anywhere to explore my journey
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Background Elements -->
   <div class="bg-gradient"></div>
   <div class="floating-shapes">
@@ -1094,6 +1350,54 @@
 
       window.addEventListener('scroll', updateOnScroll, { passive: true });
     });
+// new
+    let lastScrollTop = 0;
+const navbar = document.querySelector('header');
+let scrollTimeout;
+
+window.addEventListener('scroll', function() {
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(function() {
+    if (currentScroll > lastScrollTop && currentScroll > 100) {
+      navbar.classList.add('hidden');
+      navbar.classList.remove('visible');
+    } else {
+      navbar.classList.remove('hidden');
+      navbar.classList.add('visible');
+    }
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  }, 10);
+});
+
+navbar.classList.add('visible');
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const introSlide = document.getElementById('introSlide');
+  const body = document.body;
+  
+  
+  body.classList.add('intro-active');
+  
+  
+  introSlide.addEventListener('click', function() {
+    
+    body.classList.remove('intro-active');
+    
+   
+    introSlide.classList.add('hidden');
+    
+    
+    setTimeout(() => {
+      introSlide.style.display = 'none';
+    }, 800);
+  });
+  
+  
+});
+
   </script>
 </body>
 </html>
